@@ -6,7 +6,7 @@
         <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <el-table :data=tableData>
+    <el-table :data=tableData class="usersTable" border style="margin-top:20px">
       <el-table-column
         prop="nickname"
         label="姓名"
@@ -25,12 +25,12 @@
       <el-table-column
         prop="desc"
         label="用户头像"
-        width="100">
+        width="80">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" class="avatar">
         </template>
       </el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
             <el-button @click="handleDetails" size="small" type="primary">
               查看详细
@@ -41,6 +41,14 @@
           </template>
         </el-table-column>
     </el-table>
+      <div class="block">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :page-size="10"
+            layout="total, prev, pager, next"
+            :total="count">
+          </el-pagination>
+      </div>
   </div>
 </template>
 
@@ -48,14 +56,16 @@
   export default {
     data() {
       return {
-        tableData: []
+        tableData: [],
+        count:0
       }
     },
     methods:{
-      getData(){
-        this.$axios.get('/user').then(res => {
+      getData(pn){
+        this.$axios.get('/user',{pn}).then(res => {
           if(res.code == 200){
             this.tableData = res.data
+            this.count = res.count
           }
         })
       },
@@ -79,6 +89,9 @@
           });          
         });
       },
+      handleCurrentChange(val){
+        this.getData(val)
+      }
     },
     created(){
       this.getData()
@@ -88,9 +101,19 @@
 
 <style scoped lang="scss">
   .user-manage{
+    .usersTable{
+      width: 921px;
+      height: 250;
+      margin: 0 auto;
+    }
+
     .avatar{
       width: 60px;
       height: 60px;
+    }
+
+    .block{
+      text-align: center;
     }
   }
 </style>

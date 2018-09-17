@@ -8,7 +8,12 @@ const components = {
   layout: () => import('@/views/layout/layout'),
   index:  () => import('@/views/index/index'),
   users:  () => import('@/views/users/index'),
-  addUsers: () => import('@/views/users/addUsers')
+  addUsers: () => import('@/views/users/addUsers'),
+  changeUser: () => import('@/views/users/changeUser'),
+  category: () => import('@/views/books/category'),
+  cateBooks: () => import('@/views/books/cateBooks'),
+  cateChange: () => import('@/views/books/cateChange'),
+  cateAdd: () => import('@/views/books/cateAdd')
 }
 
 export default new Router({
@@ -23,6 +28,7 @@ export default new Router({
     },
     {
       path:'/layout',
+      name:'layout',
       component: components.layout,
       redirect:'/layout/index',
       meta:{
@@ -46,8 +52,45 @@ export default new Router({
             title:'添加新用户'
           },
           component:components.addUsers
+        },
+        {
+          path:'category',
+          component:components.category,
+          meta:{
+            title:'图书分类'
+          }
+        },
+        {
+          path:'changeUser',
+          component:components.changeUser,
+          meta:{
+            title:'修改信息'
+          }
+        },
+        {
+          path:'cateBooks',
+          name:'cateBooks',
+          component:components.cateBooks,
+          meta:{
+            title:'分类下图书'
+          }
+        },
+        {
+          path:'cateChange',
+          name:'cateChange',
+          component:components.cateChange,
+          meta:{
+            title:'修改分类'
+          }
+        },
+        {
+          path:'cateAdd',
+          component:components.cateAdd,
+          meta:{
+            title:'添加分类'
+          }
         }
       ]
-    }
+    },
   ]
 })

@@ -8,10 +8,10 @@
           <el-input v-model="formData.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="formData.password" type="password" placeholder="请输入密码"></el-input>
+          <el-input v-model="formData.password" type="password" placeholder="请输入密码" @keyup.enter.native="handleLogin"></el-input>
         </el-form-item>
       </el-form>
-      <el-button @click="handleLogin" type="primary" class="login-btn" :loading="isLoading"> 
+      <el-button @click="handleLogin"  type="primary" class="login-btn" :loading="isLoading"> 
         登录
       </el-button>
     </div>
@@ -26,7 +26,7 @@
           username:'',
           password:''
         },
-        isLoading:false
+        isLoading:false,
       }
     },
     methods: {
@@ -34,10 +34,11 @@
         this.isLoading = true
         this.$axios.post('/login',this.formData).then(res => {
           console.log(res)
+          // this.avatar = res.data.avatar
           if(res.code == 200){
             this.$message.success('登录成功')
             setTimeout(() => {
-              this.$router.push('/layout')
+              this.$router.push({name:'layout',params:{avatar:'http://pbl.yaojunrong.com/FtOSgdxerSfI8MdBbCNhlm1SRhoY'}})
             }, 1000)
           }else{
             this.$message.error('登录失败')

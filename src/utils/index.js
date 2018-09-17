@@ -30,6 +30,24 @@ const xhr ={
         })
     })
   },
+  put(url,data,config){
+    return new Promise((resolve,reject) => {
+      instance.put(url,data,config).then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  },
+  delete(url,config){
+    return new Promise((resolve,reject) => {
+      instance.delete(url,config).then(res => {
+        resolve(res.data)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
 }
 
 export const $axios = xhr
