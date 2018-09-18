@@ -12,9 +12,12 @@
       border
       style="width: 100%;margin-top:20px" class="spHeight">
       <el-table-column
-        prop="updateTime"
-        label="更新日期"
+        prop="img"
+        label="书籍封面"
         width="200">
+        <template slot-scope="scope">
+          <img :src="scope.row.img" class="avatar">
+        </template>
       </el-table-column>
       <el-table-column
         prop="author"
@@ -27,19 +30,6 @@
         width="300">
       </el-table-column>
       <el-table-column
-        prop="img"
-        label="书籍封面"
-        width="220">
-        <template slot-scope="scope">
-          <img :src="scope.row.img" class="avatar">
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="index"
-        label="索引"
-        width="30">
-      </el-table-column>
-      <el-table-column
         prop="looknums"
         label="正在观看"
         width="80">
@@ -50,10 +40,23 @@
         width="180">
       </el-table-column>
       <el-table-column
-        prop="_id"
-        label="ID"
-        width="220">
+        prop="updateTime"
+        label="更新日期"
+        width="200">
       </el-table-column>
+      <el-table-column label="操作" width="270">
+          <template slot-scope="scope">
+            <el-button @click="handleDetails(scope.row._id)" size="small" type="primary">
+              查看详细
+            </el-button>
+            <el-button @click="handleEdit(scope.row._id)"  size="small" type="danger">
+              修改
+            </el-button>
+            <el-button @click="handleDelete(scope.row._id)"  size="small" type="danger">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
     </el-table>  
   </div>
 </template>
@@ -69,10 +72,32 @@
       getData () {
         const id = this.$route.query.id
         this.$axios.get(`/category/${id}/books`).then(res => {
-          console.log(res.data.books)
           this.categBooksData = res.data.books
         })
       },
+      handleDetails(id){
+        this.$router.push({name:'bookCate',query:{id}})
+      },
+      handleEdit(id){
+        this.$router.push({name:'bookEdit',query:{id}})
+      },
+      handleDelete(id){
+        this.$confirm('此操作将永久删除一本书籍, 是否继续?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.delete(`/category/${id}`).then(res => {
+            this.$message.success(res.msg)
+            this.getCategory()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      }
     },
     created(){
       this.getData ()

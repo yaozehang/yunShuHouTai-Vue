@@ -10,10 +10,15 @@ const components = {
   users:  () => import('@/views/users/index'),
   addUsers: () => import('@/views/users/addUsers'),
   changeUser: () => import('@/views/users/changeUser'),
-  category: () => import('@/views/books/category'),
-  cateBooks: () => import('@/views/books/cateBooks'),
-  cateChange: () => import('@/views/books/cateChange'),
-  cateAdd: () => import('@/views/books/cateAdd')
+  userMine: () => import('@/views/users/userMine'),
+  editPassword: () => import('@/views/users/editPassword'),
+  detailsUsers:() => import('@/views/users/detailsUsers'),
+  category: () => import('@/views/books/category/category'),
+  cateBooks: () => import('@/views/books/category/cateBooks'),
+  cateEdit: () => import('@/views/books/category/cateEdit'),
+  cateAdd: () => import('@/views/books/category/cateAdd'),
+  bookCate: () => import('@/views/books/book/bookCate'),
+  bookEdit: () => import('@/views/books/book/bookEdit')
 }
 
 export default new Router({
@@ -68,6 +73,13 @@ export default new Router({
           }
         },
         {
+          path:'detailsUsers',
+          component:components.detailsUsers,
+          meta:{
+            title:'信息详情'
+          }
+        },
+        {
           path:'cateBooks',
           name:'cateBooks',
           component:components.cateBooks,
@@ -76,9 +88,9 @@ export default new Router({
           }
         },
         {
-          path:'cateChange',
-          name:'cateChange',
-          component:components.cateChange,
+          path:'cateEdit',
+          name:'cateEdit',
+          component:components.cateEdit,
           meta:{
             title:'修改分类'
           }
@@ -88,6 +100,36 @@ export default new Router({
           component:components.cateAdd,
           meta:{
             title:'添加分类'
+          }
+        },
+        {
+          path:'userMine',
+          component:components.userMine,
+          meta:{
+            title:'个人中心'
+          }
+        },
+        {
+          path:'editPassword',
+          component:components.editPassword,
+          meta:{
+            title:'修改密码'
+          }
+        },
+        {
+          path:'bookCate',
+          name:'bookCate',
+          component:components.bookCate,
+          meta:{
+            title:'分类下书籍'
+          }
+        },
+        {
+          path:'bookEdit',
+          name:'bookEdit',
+          component:components.bookEdit,
+          meta:{
+            title:'修改图书'
           }
         }
       ]

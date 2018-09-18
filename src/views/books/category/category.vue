@@ -6,7 +6,15 @@
         <el-breadcrumb-item>图书分类</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-        <el-table :data=categoryData class="cateTable" border style="margin-top:20px">
+    <el-table :data=categoryData class="cateTable" border style="margin-top:20px">
+      <el-table-column
+        prop="icon"
+        label="书籍icon"
+        width="200">
+        <template slot-scope="scope">
+          <img :src="scope.row.icon" class="icon">
+        </template>
+      </el-table-column>
       <el-table-column
         prop="title"
         label="图书分类名称"
@@ -15,27 +23,19 @@
       <el-table-column
         prop="index"
         label="序号"
-        width="100">
+        width="70">
       </el-table-column>
       <el-table-column
         prop="_id"
         label="ID"
         width="220">
       </el-table-column>
-      <el-table-column
-        prop="icon"
-        label="书籍icon"
-        width="190">
-        <template slot-scope="scope">
-          <img :src="scope.row.icon" class="icon">
-        </template>
-      </el-table-column>
         <el-table-column label="操作" width="270">
           <template slot-scope="scope">
             <el-button @click="handleDetails(scope.row._id)" size="small" type="primary">
               查看详细
             </el-button>
-            <el-button @click="handleChange(scope.row._id)"  size="small" type="danger">
+            <el-button @click="handleEdit(scope.row._id)"  size="small" type="danger">
               修改
             </el-button>
             <el-button @click="handleDelete(scope.row._id)"  size="small" type="danger">
@@ -51,12 +51,12 @@
   export default {
     data() {
       return {
-        categoryData:[]
+        categoryData:[],
       }
     },
     methods:{
       getCategory(){
-        this.$axios.get('/category').then(res => {
+        this.$axios.get('/category',{"size":100}).then(res => {
             if(res.code == 200){
             this.categoryData = res.data
           }
@@ -65,18 +65,18 @@
       handleDetails(id){
         this.$router.push({name:'cateBooks',query:{id}})
       },
-      handleChange(id){
-        this.$router.push({name:'cateChange',query:{id}})
+      handleEdit(id){
+        this.$router.push({name:'cateEdit',query:{id}})
       },
       handleDelete(id){
-        this.$confirm('此操作将永久删除一位管理员, 是否继续?', '警告', {
+        this.$confirm('此操作将永久删除一个书籍分类, 是否继续?', '警告', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$axios.delete(`/category/${id}`).then(res => {
             this.$message.success(res.msg)
-            this.getData()
+            this.getCategory()
           })
         }).catch(() => {
           this.$message({
@@ -95,7 +95,7 @@
 <style scoped lang="scss">
     .books-category{
       .cateTable{
-            width: 910px;
+            width: 880px;
             margin:0 auto;
             text-align: center;
       }

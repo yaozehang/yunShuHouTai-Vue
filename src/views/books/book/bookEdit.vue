@@ -3,14 +3,30 @@
     <div class="breadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/layout/index' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>添加新分类</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/layout/category' }">图书分类</el-breadcrumb-item>
+        <el-breadcrumb-item>添加新图书</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <el-form :model="categoryForm"  label-width="100px" class="demo-categoryForm">
-      <el-form-item label="类型名称" prop="title">
-        <el-input v-model="categoryForm.title" style="width:400px;"></el-input>
+    <el-form :model="newBook"  label-width="100px" class="demo-newBook">
+      <el-form-item label="书名" prop="title">
+        <el-input v-model="newBook.title" style="width:400px;"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label="ID" prop="_id">
+        <el-input v-model="newBook._id" style="width:400px;" :disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="索引" prop="index">
+        <el-input v-model="newBook.index" style="width:400px;"></el-input>
+      </el-form-item>
+      <el-form-item label="简介" prop="desc">
+        <el-input v-model="newBook.desc" style="width:400px;"></el-input>
+      </el-form-item>
+      <el-form-item label="作者" prop="author">
+        <el-input v-model="newBook.author" style="width:400px;"></el-input>
+      </el-form-item>
+      <el-form-item label="类型" prop="type">
+        <el-input v-model="newBook.type" style="width:400px;"></el-input>
+      </el-form-item>
+      <el-form-item label="封面">
         <el-upload
           class="avatar-uploader"
           action="https://upload-z1.qiniup.com"
@@ -19,7 +35,7 @@
           :on-error="onError"
           :on-remove="onRemove"
           :multiple="false">
-          <img v-if="categoryForm.icon" :src="categoryForm.icon" class="avatar">
+          <img v-if="newBook.img" :src="newBook.img" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -28,20 +44,25 @@
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </div>    
 </template>
 
 <script>
   export default {
     data(){
-      return{
-        categoryForm:{
+      return {
+        newBook:{
+          book_id:'',
           title:'',
-          icon:''
+          index:'',
+          desc:'',
+          author:'',
+          img:'',
+          type:'',
         },
         upload:{
           token:''
-        },
+        },        
       }
     },
     methods:{
@@ -50,8 +71,9 @@
           this.upload.token = res.data
         })
       },
-      onSubmit(categoryForm) {
-        this.$axios.post('category',this.categoryForm).then( res => {
+      onSubmit(newBook) {
+        this.newBook = this.$route.query.id;
+        this.$axios.post('/book',this.newBook).then( res => {
           if(res.code == 200){
             this.$message.success(res.msg)
             this.$router.push('/layout/category')
@@ -61,7 +83,7 @@
         })
       },
       onSuccess(res){
-        this.categoryForm.icon = res.url
+        this.newBook.img = res.url
         this.$message.success('上传成功')
         this.isShow = true
       },
@@ -102,7 +124,7 @@
     height: 178px;
     display: block;
   }
-  .demo-categoryForm{
+  .demo-newBook{
     width: 600px;
     margin:0 auto;
     margin-top:20px;

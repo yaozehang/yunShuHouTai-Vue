@@ -32,7 +32,7 @@
       </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleDetails" size="small" type="primary">
+            <el-button @click="handleDetails(scope.row)" size="small" type="primary">
               查看详细
             </el-button>
             <el-button @click="handleDelete(scope.row._id)"  size="small" type="danger">
@@ -69,8 +69,8 @@
           }
         })
       },
-      handleDetails(){
-        this.$router.push('/layout/userDetails')
+      handleDetails(data){
+        this.$router.push({path:'/layout/detailsUsers',query:{"data":data}})
       },
       handleDelete(id){
         this.$confirm('此操作将永久删除一位管理员, 是否继续?', '警告', {

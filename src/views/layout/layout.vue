@@ -3,7 +3,17 @@
     <div class="header ml-200">
       <h1 class="title">
         云书后台操作系统
-        <img :src="$route.params.avatar" class="avatar" >
+        <img :src="avatar" class="avatar" >
+        <el-dropdown class="dropdown">
+          <span class="el-dropdown-link">
+            图片
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="handleMine">个人中心</el-dropdown-item>
+            <el-dropdown-item @click.native="handleEdit">修改密码</el-dropdown-item>
+            <el-dropdown-item @click.native="handleLogin">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>                     
       </h1>
     </div>
     <div class="side-bar ">
@@ -22,11 +32,8 @@
           <el-menu-item-group>
             <template slot="title">用户管理</template>
             <el-menu-item index="/layout/users">用户管理</el-menu-item>
-            <el-menu-item index="/layout/addUsers">添加新用户</el-menu-item>
-            <el-menu-item index="/layout/changeUser">修改个人信息</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="登录注销">
-            <el-menu-item index="/login">登录</el-menu-item>
+            <el-menu-item index="/layout/addUsers">添加用户</el-menu-item>
+            <el-menu-item index="/layout/changeUser">修改信息</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">
@@ -71,10 +78,37 @@ export default {
     }
   },
   methods: {
+    initData(){
+        this.avatar = this.$store.state.userinfo.avatar 
+      },
+    handleMine(){
+        this.$router.push('/layout/userMine')
+    },
+    handleEdit(){
+        this.$router.push('/layout/editPassword')
+    },
+    handleLogin(){
+      this.$confirm('是否退出登录?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            this.$router.push('/login')
+            this.$message.success({
+              type:'info',
+              message:'退出成功'
+            })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消注销'
+          });          
+        })     
+    },
   },
-  created(){
-    console.log(this.$route.params.avatar)
-  }
+    created(){
+      this.initData()
+    }
 };
 </script>
 
@@ -83,6 +117,29 @@ export default {
   .header{
     background-color: #434a50;
     color: #f1f1f1;
+    img{
+      position: absolute;
+      top:0;
+      right: 0;
+      margin: 3px 10px 0px 0;
+      border:1px solid #434a50;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+    .dropdown{
+      position: absolute;
+      top:0;
+      right: 0;
+      margin: -2px 6px 0px 0;
+      height: 50px;
+
+      .el-dropdown-link{
+        font-size: 35px;
+        cursor: pointer;
+        opacity:0;
+      }
+    }
   }
   .title {
     text-align: center;

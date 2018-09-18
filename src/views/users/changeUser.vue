@@ -64,6 +64,11 @@
       }
     },
     methods:{
+      initData(){
+        this.form = {
+          ...this.$store.state.userinfo 
+        }
+      },
       onSubmit(form) {
       this.$axios.put('/user/userInfo',this.form).then(res => {
           console.log(res)
@@ -94,6 +99,7 @@
     },
     created(){
       this.getToken()
+      this.initData()
     }
   }
 </script>
