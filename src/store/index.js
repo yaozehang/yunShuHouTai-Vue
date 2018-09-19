@@ -18,6 +18,7 @@ const store = new Vuex.Store({
     CHANGE_USERINFO(state, userinfo){
       state.userinfo = userinfo
     }
+    
   },
   actions:{},
   plugins: [createPersistedState({

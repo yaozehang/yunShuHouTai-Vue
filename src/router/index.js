@@ -17,8 +17,14 @@ const components = {
   cateBooks: () => import('@/views/books/category/cateBooks'),
   cateEdit: () => import('@/views/books/category/cateEdit'),
   cateAdd: () => import('@/views/books/category/cateAdd'),
-  bookCate: () => import('@/views/books/book/bookCate'),
-  bookEdit: () => import('@/views/books/book/bookEdit')
+  cateBookAdd: () =>import('@/views/books/category/cateBookAdd'),
+  bookDetail: () => import('@/views/books/book/bookDetail'),
+  bookEdit: () => import('@/views/books/book/bookEdit'),
+  bookAll: () => import('@/views/books/book/bookAll'),
+  bookAdd: () => import('@/views/books/book/bookAdd'),
+  swiper:  () => import('@/views/swiper/index'),
+  editSwiper: () => import('@/views/swiper/editSwiper'),
+  addSwiper: () => import('@/views/swiper/addSwiper')
 }
 
 export default new Router({
@@ -117,9 +123,9 @@ export default new Router({
           }
         },
         {
-          path:'bookCate',
-          name:'bookCate',
-          component:components.bookCate,
+          path:'bookDetail',
+          name:'bookDetail',
+          component:components.bookDetail,
           meta:{
             title:'分类下书籍'
           }
@@ -130,6 +136,52 @@ export default new Router({
           component:components.bookEdit,
           meta:{
             title:'修改图书'
+          }
+        },
+        {
+          path:'bookAll',
+          component:components.bookAll,
+          meta:{
+            title:'图书列表'
+          }
+        },
+        {
+          path:'bookAdd',
+          component:components.bookAdd,
+          meta:{
+            title:'添加图书'
+          }
+        },
+        {
+          path:'cateBookAdd',
+          name:'cateBookAdd',
+          component:components.cateBookAdd,
+          meta:{
+            title:'添加图书 '
+          }
+        },
+        {
+          path:'swiper',
+          name:'swiper',
+          component:components.swiper,
+          meta:{
+            title:'轮播图'
+          }
+        },
+        {
+          path:'editSwiper',
+          name:'editSwiper',
+          component:components.editSwiper,
+          meta:{
+            title:'修改轮播图'
+          }
+        },
+        {
+          path:'addSwiper',
+          name:'addSwiper',
+          component:components.addSwiper,
+          meta:{
+            title:'添加轮播图'
           }
         }
       ]

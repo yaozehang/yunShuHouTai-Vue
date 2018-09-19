@@ -14,6 +14,9 @@
       <el-form-item label="分类排序" prop="index">
         <el-input v-model="category.index" style="width:400px;"></el-input>
       </el-form-item>
+      <el-form-item label="ID" prop="_id">
+        <el-input v-model="category._id" style="width:400px;" :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="封面">
         <el-upload
           class="avatar-uploader"
@@ -29,7 +32,7 @@
       </el-form-item>
         <el-form-item>
         <el-button type="primary" @click="onSubmit">立即上传</el-button>
-        <el-button>取消</el-button>
+        <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -43,6 +46,7 @@
           title:'',
           icon:'',
           index:'',
+          _id:''
         },
         upload:{
           token:''
@@ -55,14 +59,16 @@
           this.upload.token = res.data
         })
       },
-       onSubmit(category) {
-        const id = this.$route.query.id
+      getData(){
+        this.category = this.$route.query.id
+      },
+       onSubmit() {
+        const id = this.category._id
         this.$axios.put(`/category/${id}`,this.category).then( res => {
           if(res.code == 200){
             this.$message.success(res.msg)
-            this.$router.push('/layout/category')
+            this.$router.go(-1)
           }else{
-            console.log(res)
             this.$message.error(res.msg)
           }
         })
@@ -78,9 +84,14 @@
        onRemove(){
         this.isShow = false
       },
+      onCancel(){
+        this.$message.success('取消成功')
+        this.$router.push('/layout/category')
+      }
     },
     created(){
       this.getToken()
+      this.getData()
     }
 }
 </script>

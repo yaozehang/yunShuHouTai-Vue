@@ -5,7 +5,7 @@
         云书后台操作系统
         <img :src="avatar" class="avatar" >
         <el-dropdown class="dropdown">
-          <span class="el-dropdown-link">
+          <span class="el-dropdown-link" @click="handleMine">
             图片
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -43,25 +43,23 @@
           </template>
           <el-menu-item-group>
             <template slot="title">图书管理</template>
+            <el-menu-item index="/layout/bookAll">图书列表</el-menu-item>
+            <el-menu-item index="/layout/bookAdd">添加图书</el-menu-item>
             <el-menu-item index="/layout/category">图书分类</el-menu-item>
             <el-menu-item index="/layout/cateAdd">添加分类</el-menu-item>
           </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>
         </el-submenu>
-        <el-menu-item index="3" disabled>
+        <el-submenu index="3">
+        <template slot="title">
         <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
-        </el-menu-item>
+          <span slot="title">轮播图</span>
+        </template>
+        <el-menu-item-group>
+            <template slot="title">轮播图管理</template>
+            <el-menu-item index="/layout/swiper">轮播图列表</el-menu-item>
+            <el-menu-item index="/layout/addSwiper">添加轮播图</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-menu>
     </div>
     <div class="main-content ml-200">
@@ -93,11 +91,10 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          this.$axios.get('/logout').then( res => {
+            this.$message.success(res.msg)
             this.$router.push('/login')
-            this.$message.success({
-              type:'info',
-              message:'退出成功'
-            })
+          })
         }).catch(() => {
           this.$message({
             type: 'info',

@@ -4,7 +4,7 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/layout/index' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/layout/category' }">图书分类</el-breadcrumb-item>
-        <el-breadcrumb-item  @click.native="$router.back(-1)">分类下图书</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/layout/bookAll' }">图书</el-breadcrumb-item>
         <el-breadcrumb-item>图书详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -17,6 +17,9 @@
         </el-form-item>      
         <el-form-item label="作者">
           <p>{{bookData.author}}</p>
+        </el-form-item>
+        <el-form-item label="类型">
+          <p>{{category.title}}</p>
         </el-form-item>
         <el-form-item label="简介">
           <p>{{bookData.desc}}</p>
@@ -38,15 +41,21 @@
   export default {
     data(){
       return{
-        bookData:{}
+        bookData:{
+          type:''
+        },
+        category:[]
       }
     },
     methods:{
       getData () {
         const id = this.$route.query.id
         this.$axios.get(`/book/${id}`).then(res => {
-          this.bookData = res.data
-          console.log(this.bookData)
+          this.bookData = res.data    
+        }).then(()=>{
+            this.$axios.get(`/category/${this.bookData.type}`).then(res => {
+            this.category = res.data
+          })
         })
       },
     },
@@ -63,5 +72,9 @@
     padding-right: 20px;
     background-color: #F2F6FC;
     border-radius: 6px;
+  }
+  img{
+    width:200px;
+    height:300px;
   }
 </style>

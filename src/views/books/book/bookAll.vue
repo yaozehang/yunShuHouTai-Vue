@@ -1,28 +1,32 @@
 <template>
-  <div class="container">
+  <div>
     <div class="breadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/layout/index' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/layout/category' }">图书分类</el-breadcrumb-item>
-        <el-breadcrumb-item>图书</el-breadcrumb-item>
+        <el-breadcrumb-item>图书列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <el-table
-      :data="categBooksData"
+     <el-table
+      :data="booksData"
       border
-      style="width: 100%;margin-top:20px" class="spHeight">
+      style="margin-top:20px" class="spHeight">
       <el-table-column
         prop="img"
         label="书籍封面"
-        width="190">
+        width="220">
         <template slot-scope="scope">
-          <img :src="scope.row.img" class="avatar">
+          <img :src="scope.row.img" class="avatar" style="width:200px;height:300px;">
         </template>
       </el-table-column>
       <el-table-column
+        prop="title"
+        label="书籍名称"
+        width="160">
+      </el-table-column>
+      <el-table-column
         prop="author"
-        label="姓名"
-        width="110">
+        label="作者"
+        width="90">
       </el-table-column>
       <el-table-column
         prop="desc"
@@ -35,11 +39,6 @@
         width="80">
       </el-table-column>
       <el-table-column
-        prop="title"
-        label="书籍名称"
-        width="180">
-      </el-table-column>
-      <el-table-column
         prop="updateTime"
         label="更新日期"
         width="200">
@@ -50,7 +49,7 @@
               查看详细
             </el-button>
             <el-button @click="handleEdit(scope.row)"  size="small" type="danger">
-              修改
+              编辑
             </el-button>
             <el-button @click="handleDelete(scope.row._id)"  size="small" type="danger">
               删除
@@ -58,6 +57,14 @@
           </template>
         </el-table-column>
     </el-table>  
+      <div class="block">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :page-size="100"
+        layout="total, prev, pager, next"
+        :total="count">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -65,14 +72,15 @@
   export default {
     data(){
       return {
-        categBooksData:[]
+        booksData:[],
+        count:0
       }
     },
     methods: {
-      getData () {
-        const id = this.$route.query.id
-        this.$axios.get(`/category/${id}/books`).then(res => {
-          this.categBooksData = res.data.books
+      getData (pn) {
+        this.$axios.get('/book',{pn,size:100}).then(res => {
+          this.booksData = res.data
+          this.count = res.data.length
         })
       },
       handleDetails(id){
@@ -97,6 +105,9 @@
             message: '已取消删除'
           });          
         });
+      },
+      handleCurrentChange(val){
+        this.getData(val)
       }
     },
     created(){
@@ -105,9 +116,8 @@
   }
 </script>
 
-<style scoped lang="scss">
-  .avatar{
-    width:170px;
-    height:250px;
-  }
+<style scoped>
+.block{
+      text-align: center;
+    }
 </style>

@@ -9,8 +9,8 @@
     <el-table :data=categoryData class="cateTable" border style="margin-top:20px">
       <el-table-column
         prop="icon"
-        label="书籍icon"
-        width="200">
+        label="分类icon"
+        width="400">
         <template slot-scope="scope">
           <img :src="scope.row.icon" class="icon">
         </template>
@@ -30,15 +30,18 @@
         label="ID"
         width="220">
       </el-table-column>
-        <el-table-column label="操作" width="270">
+        <el-table-column label="操作" width="400">
           <template slot-scope="scope">
-            <el-button @click="handleDetails(scope.row._id)" size="small" type="primary">
+            <el-button @click="handleDetails(scope.row._id)" size="mini" type="primary">
               查看详细
             </el-button>
-            <el-button @click="handleEdit(scope.row._id)"  size="small" type="danger">
-              修改
+            <el-button @click="handleAdd(scope.row)" size="mini" type="primary">
+              添加图书
             </el-button>
-            <el-button @click="handleDelete(scope.row._id)"  size="small" type="danger">
+            <el-button @click="handleEdit(scope.row)"  size="mini" type="danger">
+              编辑
+            </el-button>
+            <el-button @click="handleDelete(scope.row._id)"  size="mini" type="danger">
               删除
             </el-button>
           </template>
@@ -64,6 +67,9 @@
       },
       handleDetails(id){
         this.$router.push({name:'cateBooks',query:{id}})
+      },
+      handleAdd(id){
+        this.$router.push({name:'cateBookAdd',query:{id}})
       },
       handleEdit(id){
         this.$router.push({name:'cateEdit',query:{id}})
@@ -95,14 +101,14 @@
 <style scoped lang="scss">
     .books-category{
       .cateTable{
-            width: 880px;
+            width: 1200px;
             margin:0 auto;
             text-align: center;
       }
 
      .icon{
-      width: 150px;
-      height:150px;
+      width: 65%;
+      height: 65%;
       }
   }
 </style>

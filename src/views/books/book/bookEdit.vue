@@ -3,7 +3,7 @@
     <div class="breadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/layout/index' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/layout/category' }">图书分类</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/layout/bookAll' }">图书列表</el-breadcrumb-item>
         <el-breadcrumb-item>添加新图书</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -12,19 +12,25 @@
         <el-input v-model="newBook.title" style="width:400px;"></el-input>
       </el-form-item>
       <el-form-item label="ID" prop="_id">
-        <el-input v-model="newBook._id" style="width:400px;" :disabled="true"></el-input>
+        <el-input v-model="newBook.book_id" style="width:400px;" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="索引" prop="index">
         <el-input v-model="newBook.index" style="width:400px;"></el-input>
       </el-form-item>
       <el-form-item label="简介" prop="desc">
-        <el-input v-model="newBook.desc" style="width:400px;"></el-input>
+        <el-input v-model="newBook.desc" style="width:400px;" type="textarea" autosize></el-input>
       </el-form-item>
       <el-form-item label="作者" prop="author">
         <el-input v-model="newBook.author" style="width:400px;"></el-input>
       </el-form-item>
-      <el-form-item label="类型" prop="type">
-        <el-input v-model="newBook.type" style="width:400px;"></el-input>
+      <el-form-item label="分类">
+        <el-select v-model="newBook.type">
+          <el-option v-for="(item, index) in category"
+                     :key="index"
+                     :label="item.title"
+                     :value="item._id"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="封面">
         <el-upload
@@ -41,7 +47,7 @@
       </el-form-item>
         <el-form-item>
         <el-button type="primary" @click="onSubmit">立即上传</el-button>
-        <el-button>取消</el-button>
+        <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>    
@@ -62,7 +68,8 @@
         },
         upload:{
           token:''
-        },        
+        },
+        category:[]        
       }
     },
     methods:{
@@ -71,12 +78,22 @@
           this.upload.token = res.data
         })
       },
+      getData(){
+        const id = this.$route.query.row._id
+        this.$axios.get(`/book/${id}`).then(res => {
+          this.newBook = res.data
+          this.newBook.book_id = res.data._id
+        })
+        this.$axios.get(`/category/${this.newBook.type}`).then(res => {
+          this.category = res.data
+        })
+      },
       onSubmit(newBook) {
-        this.newBook = this.$route.query.id;
-        this.$axios.post('/book',this.newBook).then( res => {
+        this.$axios.put('/book',this.newBook).then( res => {
           if(res.code == 200){
+
             this.$message.success(res.msg)
-            this.$router.push('/layout/category')
+            this.$router.go(-1)
           }else{
             this.$message.error(res.msg)
           }
@@ -93,9 +110,14 @@
       onRemove(){
         this.isShow = false
       },
+      onCancel(){
+        this.$message.success('取消成功')
+        this.$router.push('/layout/bookAll')
+      }
     },
     created(){
       this.getToken()
+      this.getData()
     }
   }
 </script>
