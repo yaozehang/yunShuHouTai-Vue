@@ -12,7 +12,7 @@
         <el-input v-model="category.title" style="width:400px;"></el-input>
       </el-form-item>
       <el-form-item label="分类排序" prop="index">
-        <el-input v-model="category.index" style="width:400px;"></el-input>
+        <el-input-number v-model="category.index" :min="1"></el-input-number>
       </el-form-item>
       <el-form-item label="ID" prop="_id">
         <el-input v-model="category._id" style="width:400px;" :disabled="true"></el-input>

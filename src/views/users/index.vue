@@ -13,7 +13,7 @@
         width="130">
       </el-table-column>
       <el-table-column
-        prop="createdTime"
+        prop="updatedTime"
         label="日期"
         width="130">
       </el-table-column>
@@ -64,6 +64,11 @@
       getData(pn){
         this.$axios.get('/user',{pn}).then(res => {
           if(res.code == 200){
+            let newArr = res.data   
+            newArr.forEach(item => {
+            let updatedTime = (new Date(item.updatedTime)).toLocaleString()
+              item.updatedTime = updatedTime
+            })
             this.tableData = res.data
             this.count = res.count
           }

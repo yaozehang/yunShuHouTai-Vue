@@ -51,6 +51,7 @@
       getData () {
         const id = this.$route.query.id
         this.$axios.get(`/book/${id}`).then(res => {
+          res.data.updateTime = (new Date(res.data.updateTime)).toLocaleString()
           this.bookData = res.data    
         }).then(()=>{
             this.$axios.get(`/category/${this.bookData.type}`).then(res => {

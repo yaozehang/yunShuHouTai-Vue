@@ -73,13 +73,18 @@
     data(){
       return {
         booksData:[],
-        count:0
+        count:0,
       }
     },
     methods: {
       getData (pn) {
-        this.$axios.get('/book',{pn,size:100}).then(res => {
-          this.booksData = res.data
+        this.$axios.get('/book',{pn,size:100}).then(res => { 
+          let newArr = res.data   
+          newArr.forEach(item => {
+          let updateTime = (new Date(item.updateTime)).toLocaleString()
+          item.updateTime = updateTime
+          })
+          this.booksData = res.data  
           this.count = res.data.length
         })
       },
@@ -108,7 +113,7 @@
       },
       handleCurrentChange(val){
         this.getData(val)
-      }
+      },
     },
     created(){
       this.getData ()

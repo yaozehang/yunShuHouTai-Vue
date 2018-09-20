@@ -21,6 +21,11 @@
           <el-form-item label="昵称">
             <p>{{userinfo.nickname}}</p>
           </el-form-item>
+          <el-form-item>
+            <el-button @click="toEdit" size="big" type="primary">
+              修改
+            </el-button>
+          </el-form-item>
     </el-form>
     </div>    
   </div>
@@ -36,6 +41,9 @@
     methods: {
       initData() {
         this.userinfo = this.$store.state.userinfo
+      },
+      toEdit(){
+        this.$router.push('/layout/changeUser')
       }
     },
     created(){

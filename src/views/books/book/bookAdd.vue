@@ -71,7 +71,7 @@
     },
     methods:{
       async getCategoryData() {
-        const res = await this.$axios.get('/category')
+        const res = await this.$axios.get('/category',{size:100})
         this.categoryData = res.data
       },
       getToken() {

@@ -49,7 +49,7 @@
         this.cateBook = this.$route.query.id
       },
       async getBook(){
-        const res = await this.$axios.get('/book')
+        const res = await this.$axios.get('/book',{size:1000})
         this.bookData = res.data
       },
       onSubmit(){

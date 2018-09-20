@@ -40,7 +40,7 @@
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="onSubmit">修改</el-button>
-    <el-button>取消</el-button>
+    <el-button @click="onCancel">取消</el-button>
   </el-form-item>
 </el-form>
   </div>
@@ -95,6 +95,9 @@
         this.$axios.get('http://upload.yaojunrong.com/getToken').then(res => {
           this.upload.token = res.data
         })
+      },
+      onCancel(){
+        this.$router.go(-1)
       }
     },
     created(){

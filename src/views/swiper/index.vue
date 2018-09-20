@@ -21,7 +21,7 @@
       <el-table-column label="图书" prop="book.title"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="small" type="primary" @click="edit(scope.row)">
+          <el-button size="small" type="primary" @click="edit(scope.row._id)">
             编辑
           </el-button>
           <el-button size="small" type="danger" @click="deleteSwiper(scope.row._id)">
@@ -58,8 +58,8 @@
           this.swiperCount = res.count
         })
       },
-      edit(row) {
-        this.$router.push({name: 'editSwiper', query: {row}})
+      edit(id) {
+        this.$router.push({name: 'editSwiper', query: {id}})
       },
       deleteSwiper(id) {
         this.$confirm('此操作将删除该轮播图, 是否继续?', '提示', {

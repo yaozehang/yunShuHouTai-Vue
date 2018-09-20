@@ -14,8 +14,8 @@
       <el-form-item label="ID" prop="_id">
         <el-input v-model="newBook.book_id" style="width:400px;" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item label="索引" prop="index">
-        <el-input v-model="newBook.index" style="width:400px;"></el-input>
+      <el-form-item label="排序" prop="index">
+        <el-input-number v-model="newBook.index" :min="1"></el-input-number>
       </el-form-item>
       <el-form-item label="简介" prop="desc">
         <el-input v-model="newBook.desc" style="width:400px;" type="textarea" autosize></el-input>

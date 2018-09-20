@@ -10,7 +10,7 @@
       <el-table-column
         prop="icon"
         label="分类icon"
-        width="400">
+        width="379">
         <template slot-scope="scope">
           <img :src="scope.row.icon" class="icon">
         </template>
@@ -107,8 +107,8 @@
       }
 
      .icon{
-      width: 65%;
-      height: 65%;
+      width: 35%;
+      height: 35%;
       }
   }
 </style>

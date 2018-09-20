@@ -57,7 +57,15 @@
             </el-button>
           </template>
         </el-table-column>
-    </el-table>  
+    </el-table> 
+    <div class="block">
+          <el-pagination
+            @current-change="handleCurrentChange"
+            :page-size="4"
+            layout="total, prev, pager, next"
+            :total="count">
+          </el-pagination>
+      </div>
   </div>
 </template>
 
@@ -65,14 +73,21 @@
   export default {
     data(){
       return {
-        categBooksData:[]
+        categBooksData:[],
+        count:0
       }
     },
     methods: {
-      getData () {
+      getData (pn) {
         const id = this.$route.query.id
-        this.$axios.get(`/category/${id}/books`).then(res => {
+        this.$axios.get(`/category/${id}/books`,{pn,size:4}).then(res => {
+          let newArr = res.data.books  
+          newArr.forEach(item => {
+          let updateTime = (new Date(item.updateTime)).toLocaleString()
+          item.updateTime = updateTime
+          })
           this.categBooksData = res.data.books
+          this.count = res.count
         })
       },
       handleDetails(id){
@@ -97,6 +112,9 @@
             message: '已取消删除'
           });          
         });
+      },
+      handleCurrentChange(val){
+        this.getData(val)
       }
     },
     created(){
@@ -110,4 +128,7 @@
     width:170px;
     height:250px;
   }
+  .block{
+      text-align: center;
+    }
 </style>

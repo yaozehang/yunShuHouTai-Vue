@@ -23,7 +23,6 @@ const components = {
   bookAll: () => import('@/views/books/book/bookAll'),
   bookAdd: () => import('@/views/books/book/bookAdd'),
   swiper:  () => import('@/views/swiper/index'),
-  editSwiper: () => import('@/views/swiper/editSwiper'),
   addSwiper: () => import('@/views/swiper/addSwiper')
 }
 
@@ -171,7 +170,7 @@ export default new Router({
         {
           path:'editSwiper',
           name:'editSwiper',
-          component:components.editSwiper,
+          component:components.addSwiper,
           meta:{
             title:'修改轮播图'
           }
